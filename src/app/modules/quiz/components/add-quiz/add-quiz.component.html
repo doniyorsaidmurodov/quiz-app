@@ -16,20 +16,35 @@
 
     <ng-container [ngSwitch]="answerFormat">
       <ng-template [ngSwitchCase]="1">
-        <mat-form-field class="w-full" [appearance]="'outline'">
-          <mat-label>Question answer</mat-label>
+        <ng-container [formArrayName]="'paragraphAnswers'">
+          <ng-container *ngFor="let answer of paragraphAnswers.controls; let i = index">
+            <ng-container [formGroupName]="i">
+              <mat-form-field class="w-full" [appearance]="'outline'">
+                <mat-label>{{i + 1}} Question answer</mat-label>
+                <input [formControlName]="'value'" matInput>
+              </mat-form-field>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <mat-form-field class="w-full" [appearance]="'outline'" [subscriptSizing]="'dynamic'">
+          <mat-label>Enter answer number</mat-label>
           <input [formControlName]="'answer'" matInput>
+          <mat-hint>Enter answer index from 1 to {{paragraphAnswers.controls.length}}</mat-hint>
         </mat-form-field>
+        <button (click)="addParagraphAnswer()" [color]="'primary'" type="button" mat-raised-button>
+          +Add another answer
+        </button>
+
       </ng-template>
       <ng-template [ngSwitchCase]="2">
-        <div class="text-right">
+        <div class="w-full text-right">
           <button (click)="addCheckboxAnswer()" [color]="'primary'" type="button" mat-raised-button>
             Add answer
           </button>
         </div>
-        <ng-container [formArrayName]="'answers'">
-          <ng-container *ngFor="let answer of answers.controls; let i = index">
-            <div [formGroupName]="i">
+        <ng-container [formArrayName]="'checkboxAnswers'">
+          <ng-container *ngFor="let answer of checkboxAnswers.controls; let i = index">
+            <div class="w-full" [formGroupName]="i">
               <div class="flex items-center mt-4">
                 <mat-checkbox [formControlName]="'checked'" [color]="'primary'" [value]="answer.value"></mat-checkbox>
                 <mat-form-field class="w-full mx-4" [appearance]="'outline'" [subscriptSizing]="'dynamic'">
@@ -46,6 +61,6 @@
       </ng-template>
     </ng-container>
     <pre>{{form.value | json}}</pre>
-    <button class="mt-auto ml-auto" [color]="'primary'" mat-raised-button>Add Question</button>
+    <button class="mt-auto ml-auto" [color]="'primary'" [disabled]="form.invalid" mat-raised-button>Submit</button>
   </form>
 </div>

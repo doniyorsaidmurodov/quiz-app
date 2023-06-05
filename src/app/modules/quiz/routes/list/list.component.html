@@ -8,7 +8,8 @@
   </div>
   <div class="flex-auto bg-gray-100">
     <div class="container mx-auto">
-      <div class="flex justify-end pt-8">
+      <div class="flex justify-between py-8">
+        <button [routerLink]="'../answers'" [color]="'primary'" mat-raised-button>Review My Answers</button>
         <button (click)="addQuiz()" [color]="'primary'" mat-raised-button>Add Question</button>
       </div>
       <div class="grid grid-cols-4 gap-4">
@@ -20,6 +21,7 @@
           </div>
         </ng-container>
       </div>
+      <pre>{{quizList | json}}</pre>
     </div>
   </div>
 

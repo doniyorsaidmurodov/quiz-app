@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSelectChange} from '@angular/material/select';
 import {MatDialogRef} from '@angular/material/dialog';
 import {quizList} from '../../../../../mock-api/data';
@@ -25,8 +25,12 @@ export class AddQuizComponent implements OnInit {
     });
   }
 
-  get answers(): FormArray<any> {
-    return this.form.get('answers') as FormArray<any>;
+  get checkboxAnswers(): FormArray<any> {
+    return this.form.get('checkboxAnswers') as FormArray<any>;
+  }
+
+  get paragraphAnswers(): FormArray<any> {
+    return this.form.get('paragraphAnswers') as FormArray<any>;
   }
 
   selectAnswerFormat(format: MatSelectChange) {
@@ -35,35 +39,52 @@ export class AddQuizComponent implements OnInit {
     });
     this.answerFormat = format.value;
     if (format.value === 1) {
-      this.form.addControl('answer', this.fb.control(''));
+      this.form.addControl('paragraphAnswers', this.fb.array([]));
+      this.paragraphAnswers.push(this.fb.group({
+        id: this.fb.control(1),
+        value: this.fb.control(null)
+      }));
+      this.form.addControl('answer', this.fb.control('', [Validators.max(this.paragraphAnswers.length)]));
     } else {
-      this.form.addControl('answers', this.fb.array([]));
-      this.answers.push(this.fb.group({
+      this.form.addControl('checkboxAnswers', this.fb.array([]));
+      this.checkboxAnswers.push(this.fb.group({
+        id: this.fb.control(1),
         checked: this.fb.control(false),
-        value: this.fb.control(1),
         title: this.fb.control(null)
       }));
     }
   }
 
   submit() {
-    this.dialogRef.close();
-    quizList.push(this.form.value);
+    if (this.form.valid) {
+      this.dialogRef.close();
+      quizList.push(this.form.value);
+    }
   }
 
   addCheckboxAnswer() {
-    if (this.answers.length < 5) {
-      this.answers.push(this.fb.group({
+    if (this.checkboxAnswers.length < 5) {
+      this.checkboxAnswers.push(this.fb.group({
+        id: this.fb.control(this.checkboxAnswers.length + 1),
         checked: this.fb.control(false),
-        value: this.fb.control(this.answers.length + 1),
         title: this.fb.control(null)
       }));
     }
   }
 
   removeCheckboxAnswer(index: number) {
-    if (this.answers.length > 1) {
-      this.answers.removeAt(index);
+    if (this.checkboxAnswers.length > 1) {
+      this.checkboxAnswers.removeAt(index);
+    }
+  }
+
+  addParagraphAnswer() {
+    if (this.paragraphAnswers.length < 5) {
+      this.paragraphAnswers.push(this.fb.group({
+        id: this.fb.control(this.paragraphAnswers.length + 1),
+        value: this.fb.control(null)
+      }));
+      this.form.get('answer')?.setValidators([Validators.max(this.paragraphAnswers.length)])
     }
   }
 }
