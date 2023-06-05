@@ -1,0 +1,26 @@
+<div class="flex flex-col flex-auto">
+  <div class="bg-sky-950">
+    <div class="container mx-auto">
+      <div class="flex items-center justify-center py-8">
+        <h1 class="text-lg text-white">Questions list</h1>
+      </div>
+    </div>
+  </div>
+  <div class="flex-auto bg-gray-100">
+    <div class="container mx-auto">
+      <div class="flex justify-end pt-8">
+        <button (click)="addQuiz()" [color]="'primary'" mat-raised-button>Add Question</button>
+      </div>
+      <div class="grid grid-cols-4 gap-4">
+        <ng-container *ngFor="let quiz of quizList">
+          <div class="col-span-1">
+            <div class="card">
+              <div>{{quiz.title}}</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+</div>

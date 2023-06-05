@@ -1,0 +1,6 @@
+<p>answers works!</p>
+<button routerLink="../list">Back</button>
+<ul *ngFor="let quiz of quizList">
+  <li>{{quiz.title}}</li>
+</ul>
+<button (click)="removeLast()">Remove last</button>

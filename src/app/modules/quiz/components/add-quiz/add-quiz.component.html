@@ -1,0 +1,51 @@
+<div class="text-lg text-white p-4 bg-blue-800">Add Question</div>
+<div class="flex flex-col flex-auto p-4">
+  <mat-form-field class="w-full" [appearance]="'outline'">
+    <mat-label>Select answer format</mat-label>
+    <mat-select (selectionChange)="selectAnswerFormat($event)">
+      <mat-option [value]="1">Paragraph</mat-option>
+      <mat-option [value]="2">Checkbox</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <form class="flex flex-col flex-auto items-start" [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field class="w-full" [appearance]="'outline'">
+      <mat-label>Question title</mat-label>
+      <textarea [formControlName]="'title'" matInput></textarea>
+    </mat-form-field>
+
+    <ng-container [ngSwitch]="answerFormat">
+      <ng-template [ngSwitchCase]="1">
+        <mat-form-field class="w-full" [appearance]="'outline'">
+          <mat-label>Question answer</mat-label>
+          <input [formControlName]="'answer'" matInput>
+        </mat-form-field>
+      </ng-template>
+      <ng-template [ngSwitchCase]="2">
+        <div class="text-right">
+          <button (click)="addCheckboxAnswer()" [color]="'primary'" type="button" mat-raised-button>
+            Add answer
+          </button>
+        </div>
+        <ng-container [formArrayName]="'answers'">
+          <ng-container *ngFor="let answer of answers.controls; let i = index">
+            <div [formGroupName]="i">
+              <div class="flex items-center mt-4">
+                <mat-checkbox [formControlName]="'checked'" [color]="'primary'" [value]="answer.value"></mat-checkbox>
+                <mat-form-field class="w-full mx-4" [appearance]="'outline'" [subscriptSizing]="'dynamic'">
+                  <mat-label>Answer title</mat-label>
+                  <input [formControlName]="'title'" matInput>
+                </mat-form-field>
+                <button (click)="removeCheckboxAnswer(i)" [color]="'warn'" type="button" mat-icon-button>
+                  <mat-icon>remove</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </ng-container>
+    <pre>{{form.value | json}}</pre>
+    <button class="mt-auto ml-auto" [color]="'primary'" mat-raised-button>Add Question</button>
+  </form>
+</div>

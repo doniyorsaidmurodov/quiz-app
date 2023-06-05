@@ -1,0 +1,11 @@
+:host {
+  @apply flex flex-col flex-auto;
+}
+
+h1 {
+  @apply mb-0;
+}
+
+.card {
+  @apply shadow-md border bg-white p-4 rounded-md;
+}
