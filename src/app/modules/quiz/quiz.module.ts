@@ -18,6 +18,10 @@ const routes: Routes = [
         loadChildren: () => import('./routes/list/list.module').then((m) => m.QuizListModule)
       },
       {
+        path: 'list/:id',
+        loadChildren: () => import('./routes/details/details.module').then((m) => m.QuizDetailsModule)
+      },
+      {
         path: 'answers',
         loadChildren: () => import('./routes/answers/answers.module').then((m) => m.QuizAnswersModule)
       }

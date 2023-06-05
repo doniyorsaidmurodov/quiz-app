@@ -1,0 +1,28 @@
+<div class="bg-sky-950">
+  <div class="container mx-auto">
+    <div class="flex items-center justify-center py-8">
+      <h1 class="text-lg text-white">Question</h1>
+    </div>
+  </div>
+</div>
+<div class="container mx-auto">
+  <div class="py-8">
+    <ng-template [ngIf]="quiz" [ngIfElse]="showEmpty">
+      <div class="text-center text-lg">{{quiz.title}}</div>
+      <ng-container [ngSwitch]="quiz.type">
+        <ng-template [ngSwitchCase]="'paragraph'">
+          <pre>{{quiz['paragraphAnswers'] | json}}</pre>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'checkbox'">
+          <pre>{{quiz['checkboxAnswers'] | json}}</pre>
+        </ng-template>
+      </ng-container>
+    </ng-template>
+    <ng-template #showEmpty>
+      <div class="text-center">
+        <h2>No any quiz</h2>
+        <a [routerLink]="'../'">Go back</a>
+      </div>
+    </ng-template>
+  </div>
+</div>

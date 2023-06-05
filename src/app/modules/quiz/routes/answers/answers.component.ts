@@ -8,8 +8,4 @@ import {quizList} from '../../../../../mock-api/data';
 })
 export class QuizAnswersComponent {
   quizList = quizList;
-
-  removeLast() {
-    this.quizList.pop();
-  }
 }

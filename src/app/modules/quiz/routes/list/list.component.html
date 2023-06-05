@@ -13,10 +13,13 @@
         <button (click)="addQuiz()" [color]="'primary'" mat-raised-button>Add Question</button>
       </div>
       <div class="grid grid-cols-4 gap-4">
-        <ng-container *ngFor="let quiz of quizList">
+        <ng-container *ngFor="let quiz of quizList; let i = index">
           <div class="col-span-1">
             <div class="card">
-              <div>{{quiz.title}}</div>
+              <div class="py-4">{{quiz.title}}</div>
+              <div class="text-right">
+                <button [routerLink]="['../list/', i]" [color]="'primary'" mat-raised-button>Start</button>
+              </div>
             </div>
           </div>
         </ng-container>

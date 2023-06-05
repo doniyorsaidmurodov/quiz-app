@@ -21,7 +21,8 @@ export class AddQuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      title: this.fb.control('')
+      title: this.fb.control(''),
+      type: this.fb.control('')
     });
   }
 
@@ -35,10 +36,12 @@ export class AddQuizComponent implements OnInit {
 
   selectAnswerFormat(format: MatSelectChange) {
     this.form = this.fb.group({
-      title: this.fb.control('')
+      title: this.fb.control(''),
+      type: this.fb.control('')
     });
     this.answerFormat = format.value;
     if (format.value === 1) {
+      this.form.controls['type'].patchValue('paragraph');
       this.form.addControl('paragraphAnswers', this.fb.array([]));
       this.paragraphAnswers.push(this.fb.group({
         id: this.fb.control(1),
@@ -46,6 +49,7 @@ export class AddQuizComponent implements OnInit {
       }));
       this.form.addControl('answer', this.fb.control('', [Validators.max(this.paragraphAnswers.length)]));
     } else {
+      this.form.controls['type'].patchValue('checkbox');
       this.form.addControl('checkboxAnswers', this.fb.array([]));
       this.checkboxAnswers.push(this.fb.group({
         id: this.fb.control(1),
@@ -84,7 +88,7 @@ export class AddQuizComponent implements OnInit {
         id: this.fb.control(this.paragraphAnswers.length + 1),
         value: this.fb.control(null)
       }));
-      this.form.get('answer')?.setValidators([Validators.max(this.paragraphAnswers.length)])
+      this.form.get('answer')?.setValidators([Validators.max(this.paragraphAnswers.length)]);
     }
   }
 }

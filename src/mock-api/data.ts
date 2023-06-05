@@ -1,1 +1,1 @@
-export const quizList: any[] = []
+export const quizList: any[] = [];
